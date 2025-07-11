@@ -9,7 +9,7 @@ app.use(cors({
   origin: ['http://localhost:3000', 'https://menu-app-front-end-five.vercel.app']
 }));
 
-app.use(express.json());
+app.use(express.json()); 
 
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
@@ -17,6 +17,8 @@ mongoose.connect(process.env.MONGO_URI, {
 })
 .then(() => console.log("✅ MongoDB connected"))
 .catch(err => console.error("❌ MongoDB connection error:", err));
+
+mongoose.set('debug', true);
 
 app.use('/api/menu', require('./routes/menu'));
 

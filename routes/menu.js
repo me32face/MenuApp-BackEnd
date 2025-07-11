@@ -2,14 +2,16 @@ const express = require('express');
 const router = express.Router();
 const MenuItem = require('../models/MenuItem');
 
-// POST /api/menu - Add new item
 router.post('/', async (req, res) => {
   const { name, description, price, category } = req.body;
   console.log("📝 Incoming new item:", req.body);
 
-  // Validate required fields
-  if (!name || !price || !category) {
+  if (!name || price === undefined || !category) {
     return res.status(400).json({ message: "Name, price, and category are required" });
+  }
+
+  if (typeof price !== 'number') {
+    return res.status(400).json({ message: "Price must be a number" });
   }
 
   try {
@@ -29,7 +31,6 @@ router.post('/', async (req, res) => {
   }
 });
 
-// GET /api/menu - Fetch items by category or all
 router.get('/', async (req, res) => {
   const { category } = req.query;
   console.log("📥 GET /api/menu called. Category:", category || "all");
